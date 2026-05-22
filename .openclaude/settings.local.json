@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"/c/Users/simon/AppData/Local/Programs/Python/Python312/Scripts/pip\" install:*)",
+      "Bash(npm install:*)",
+      "Bash(\"/c/Users/simon/AppData/Local/Programs/Python/Python312/python\" -c \"import emergentintegrations; print\\(emergentintegrations.__version__\\)\")",
+      "Bash(ls \"/c/Users/simon/Downloads/site-beton-amprentat-main \\(1\\)/site-beton-amprentat-main/backend/.env\")",
+      "Bash(sc query:*)",
+      "Bash(npm start:*)"
+    ]
+  }
+}

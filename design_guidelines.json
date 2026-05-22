@@ -1,0 +1,123 @@
+{
+  "theme": "light",
+  "archetype": "Organic & Earthy",
+  "mood": "Solid, premium, trustworthy, professional, architectural",
+  "colors": {
+    "primary": "#A44A3F",
+    "primary_hover": "#8E3F35",
+    "background_base": "#F9F7F3",
+    "background_secondary": "#E8E4D9",
+    "text_main": "#1C1A17",
+    "text_muted": "#5C5852",
+    "border_color": "#D6D0C4"
+  },
+  "typography": {
+    "headings": {
+      "font_family": "Cormorant Garamond, serif",
+      "weights": ["400", "600"],
+      "styling": "tracking-tight, elegant, sometimes italicized for emphasis"
+    },
+    "body": {
+      "font_family": "Manrope, sans-serif",
+      "weights": ["400", "500"],
+      "styling": "clean, readable, geometric"
+    }
+  },
+  "layout": {
+    "spacing_scale": "Generous (p-8, p-16, p-24)",
+    "container": "max-w-7xl mx-auto px-6",
+    "border_radius": "rounded-none or minimal rounded-sm (0px to 4px) to emphasize solid construction",
+    "surfaces": "Solid, tactile flat colors. No glassmorphism. Subtle ambient shadows for depth."
+  },
+  "image_urls": {
+    "hero_background": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/8c4a4944-dfd0-4c6f-8674-e010e8aad293/images/07fe56637c168ded29353c60a693c3f47ade0d51a074c9eba14a931c49f55f59.png",
+      "description": "High-end stamped concrete patio, architectural lighting."
+    },
+    "texture_overlay": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/8c4a4944-dfd0-4c6f-8674-e010e8aad293/images/5a45f923abe149cd95b058dbb616bceb26645920fe1a05c1098db190bc60e51b.png",
+      "description": "Concrete texture for section backgrounds."
+    },
+    "service_elicopterizat": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/8c4a4944-dfd0-4c6f-8674-e010e8aad293/images/44803b3e2fbf9a844d91d75f22c938f5d92c44999ef03bd578adaf9c5f8747d6.png",
+      "description": "Polished industrial concrete floor."
+    },
+    "service_verticalizat": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/8c4a4944-dfd0-4c6f-8674-e010e8aad293/images/da2956666c1eeaccb8c91013a4b76daa2f12fe2b2f9b3a228fedec92fff3a071.png",
+      "description": "Textured vertical concrete wall."
+    },
+    "service_amprentat": {
+      "url": "https://images.unsplash.com/photo-1678794792766-84eb99fe3010?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MjJ8MHwxfHNlYXJjaHwxfHxzdGFtcGVkJTIwY29uY3JldGUlMjBwYXRpbyUyMHRleHR1cmV8ZW58MHx8fHwxNzc5MjY5OTY5fDA&ixlib=rb-4.1.0&q=85",
+      "description": "Close up view of stamped concrete pattern."
+    },
+    "gallery_1": {
+      "url": "https://images.unsplash.com/photo-1771531072574-af6ed6b954c0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwxfHxwb2xpc2hlZCUyMGNvbmNyZXRlJTIwZmxvb3IlMjBpbmR1c3RyaWFsfGVufDB8fHx8MTc3OTI2OTk2OXww&ixlib=rb-4.1.0&q=85",
+      "description": "Gallery image 1 - warehouse floor"
+    },
+    "gallery_2": {
+      "url": "https://images.unsplash.com/photo-1764856601179-dfeca7b37e4c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNzV8MHwxfHNlYXJjaHwyfHxjb25zdHJ1Y3Rpb24lMjB3b3JrZXIlMjBjb25jcmV0ZSUyMHBvdXJpbmd8ZW58MHx8fHwxNzc5MjY5OTY5fDA&ixlib=rb-4.1.0&q=85",
+      "description": "Gallery image 2 - pouring concrete"
+    },
+    "gallery_3": {
+      "url": "https://images.pexels.com/photos/35742732/pexels-photo-35742732.jpeg",
+      "description": "Gallery image 3 - rustic stone wall"
+    }
+  },
+  "sections_and_components": {
+    "header": {
+      "type": "sticky",
+      "background": "Solid bone white (#F9F7F3) with bottom border, no transparency",
+      "components": ["Logo text", "Navigation links", "Phone CTA button (Terracotta)"]
+    },
+    "hero": {
+      "layout": "Asymmetrical split or large text overlay with 30-40% gradient overlay to ensure text contrast",
+      "content": "Headline in Cormorant Garamond emphasizing the 3 services. Terracotta primary button."
+    },
+    "services_detail": {
+      "layout": "Grid of 3 items. Asymmetrical bento grid or staggered vertical cards.",
+      "visuals": "Use the 3 specific service images (amprentat, elicopterizat, verticalizat). Emphasize structural numbers (01, 02, 03) in typography."
+    },
+    "about_quality": {
+      "layout": "Editorial text blocks, large quote style for Ionut Encea.",
+      "content": "Highlight Spanish materials, warranty, national coverage (toata tara). Use a tactile concrete texture overlay subtly in the background."
+    },
+    "gallery": {
+      "layout": "Masonry or bento grid for project photos with hover scale effects."
+    },
+    "reviews": {
+      "layout": "Horizontal scroll or simple minimal cards with high contrast text."
+    },
+    "contact": {
+      "layout": "Two-column. Contact info on left, form on right. Form uses Shadcn customized to look flat, sharp borders, no roundness.",
+      "components": ["Customized Shadcn Input, Textarea, Button"]
+    },
+    "footer": {
+      "layout": "Large typographic 'RRS Team IMP', dark charcoal background (#1C1A17) with bone white text for high contrast."
+    },
+    "admin_dashboard": {
+      "theme": "Consistent with public site but functional. Bone white background, charcoal sidebar.",
+      "layout": "Sidebar navigation (Overview, Gallery, Reviews, Messages). Data-dense tables.",
+      "components": ["Shadcn Tables", "Shadcn Tabs", "Shadcn Dialog for uploads/approval"]
+    }
+  },
+  "motion_and_interactions": {
+    "hover_states": "Buttons subtly translate-y-1 with darkened color. Images scale up slightly inside overflow-hidden containers.",
+    "scroll_animations": "Use Framer Motion for staggered fade-in up of service items.",
+    "transitions": "Smooth transform and opacity on interactable elements."
+  },
+  "icons": {
+    "library": "lucide-react",
+    "style": "Clean, structural, stroke-width 1.5"
+  },
+  "instructions_to_main_agent": [
+    "Install Cormorant Garamond and Manrope via Google Fonts in index.css.",
+    "Use strict Semantic HTML and Tailwind for landing page layout.",
+    "Utilize Shadcn components heavily in the Admin panel and customize them minimally to fit the brand.",
+    "DO NOT use Inter or Roboto anywhere.",
+    "All text in Romanian as per problem statement.",
+    "Include data-testid on all interactive elements.",
+    "Implement a clean JWT auth for the admin panel login.",
+    "Avoid generic 'SaaS' vibes. This is a physical, tactile, premium construction business.",
+    "Replace Shadcn card borders with 1px solid #D6D0C4, and remove large border radiuses (use rounded-sm max)."
+  ]
+}
