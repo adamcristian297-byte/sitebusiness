@@ -1,1 +1,10 @@
-backend/
+node_modules
+.git
+.openclaude
+.emergent
+memory
+test_reports
+tests
+*.md
+!README.md
+backend
