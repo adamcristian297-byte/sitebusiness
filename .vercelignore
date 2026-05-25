@@ -7,4 +7,3 @@ test_reports
 tests
 *.md
 !README.md
-backend
