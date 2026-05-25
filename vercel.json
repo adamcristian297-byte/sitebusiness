@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "ignoreCommand": "echo skipping",
   "builds": [
     {
       "src": "api/index.py",
