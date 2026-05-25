@@ -28,8 +28,8 @@ export default function Footer() {
           <div className="lg:col-span-3">
             <div className="text-[11px] uppercase tracking-[0.25em] text-[#E8E4D9]/60 mb-4">Contact</div>
             <ul className="space-y-2 text-sm">
-              <li><a href="tel:+40771751285" className="hover:text-[#A44A3F]">0771 751 285</a></li>
-              <li><a href="mailto:contact@rrsteam.ro" className="hover:text-[#A44A3F]">contact@rrsteam.ro</a></li>
+              <li><a href="tel:+40770865497" className="hover:text-[#A44A3F]">0770865497</a></li>
+              <li><a href="mailto:adamcristian606@gmail.com" className="hover:text-[#A44A3F]">adamcristian606@gmail.com</a></li>
               <li>România — acoperire națională</li>
             </ul>
           </div>

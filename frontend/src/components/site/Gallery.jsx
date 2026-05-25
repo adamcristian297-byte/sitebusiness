@@ -1,38 +1,7 @@
 import { useEffect, useState } from "react";
 import api, { galleryImageUrl } from "../../lib/api";
 
-const FALLBACK = [
-  {
-    id: "fb1",
-    url: "https://images.unsplash.com/photo-1771531072574-af6ed6b954c0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwxfHxwb2xpc2hlZCUyMGNvbmNyZXRlJTIwZmxvb3IlMjBpbmR1c3RyaWFsfGVufDB8fHx8MTc3OTI2OTk2OXww&ixlib=rb-4.1.0&q=85",
-    title: "Pardoseală industrială",
-  },
-  {
-    id: "fb2",
-    url: "https://images.unsplash.com/photo-1764856601179-dfeca7b37e4c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNzV8MHwxfHNlYXJjaHwyfHxjb25zdHJ1Y3Rpb24lMjB3b3JrZXIlMjBjb25jcmV0ZSUyMHBvdXJpbmd8ZW58MHx8fHwxNzc5MjY5OTY5fDA&ixlib=rb-4.1.0&q=85",
-    title: "Turnare beton",
-  },
-  {
-    id: "fb3",
-    url: "https://images.pexels.com/photos/35742732/pexels-photo-35742732.jpeg",
-    title: "Zid decorativ",
-  },
-  {
-    id: "fb4",
-    url: "https://static.prod-images.emergentagent.com/jobs/8c4a4944-dfd0-4c6f-8674-e010e8aad293/images/44803b3e2fbf9a844d91d75f22c938f5d92c44999ef03bd578adaf9c5f8747d6.png",
-    title: "Hala elicopterizată",
-  },
-  {
-    id: "fb5",
-    url: "https://static.prod-images.emergentagent.com/jobs/8c4a4944-dfd0-4c6f-8674-e010e8aad293/images/da2956666c1eeaccb8c91013a4b76daa2f12fe2b2f9b3a228fedec92fff3a071.png",
-    title: "Beton verticalizat",
-  },
-  {
-    id: "fb6",
-    url: "https://images.unsplash.com/photo-1678794792766-84eb99fe3010?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MjJ8MHwxfHNlYXJjaHwxfHxzdGFtcGVkJTIwY29uY3JldGUlMjBwYXRpbyUyMHRleHR1cmV8ZW58MHx8fHwxNzc5MjY5OTY5fDA&ixlib=rb-4.1.0&q=85",
-    title: "Beton amprentat",
-  },
-];
+const FALLBACK = [];
 
 export default function Gallery() {
   const [items, setItems] = useState([]);
@@ -62,7 +31,7 @@ export default function Gallery() {
             </h2>
           </div>
           {items.length === 0 && loaded && (
-            <p className="text-sm text-[#5C5852] italic">Galerie demonstrativă — în curând lucrări reale.</p>
+            <p className="text-sm text-[#5C5852] italic">În curând — lucrări noi adăugate constant.</p>
           )}
         </div>
 

@@ -47,11 +47,11 @@ export default function Header() {
 
         <div className="flex items-center gap-3">
           <a
-            href="tel:+40771751285"
+            href="tel:+40770865497"
             data-testid="header-phone-cta"
             className="hidden sm:inline-flex btn-terracotta"
           >
-            <Phone className="w-4 h-4" strokeWidth={1.5} /> 0771 751 285
+            <Phone className="w-4 h-4" strokeWidth={1.5} /> 0770865497
           </a>
           <button
             className="lg:hidden p-2"
@@ -78,8 +78,8 @@ export default function Header() {
                 {l.label}
               </a>
             ))}
-            <a href="tel:+40771751285" className="btn-terracotta w-fit" data-testid="mobile-phone-cta">
-              <Phone className="w-4 h-4" /> 0771 751 285
+            <a href="tel:+40770865497" className="btn-terracotta w-fit" data-testid="mobile-phone-cta">
+              <Phone className="w-4 h-4" /> 0770865497
             </a>
           </div>
         </div>

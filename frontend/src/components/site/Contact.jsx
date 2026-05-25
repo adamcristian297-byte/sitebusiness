@@ -42,8 +42,8 @@ export default function Contact() {
                 <Phone className="w-5 h-5 text-[#A44A3F] mt-1" strokeWidth={1.5} />
                 <div>
                   <div className="text-[11px] uppercase tracking-[0.25em] text-[#5C5852] mb-1">Telefon</div>
-                  <a href="tel:+40771751285" className="text-lg" data-testid="contact-phone">
-                    0771 751 285
+                  <a href="tel:+40770865497" className="text-lg" data-testid="contact-phone">
+                    0770865497
                   </a>
                 </div>
               </li>
@@ -51,8 +51,8 @@ export default function Contact() {
                 <Mail className="w-5 h-5 text-[#A44A3F] mt-1" strokeWidth={1.5} />
                 <div>
                   <div className="text-[11px] uppercase tracking-[0.25em] text-[#5C5852] mb-1">Email</div>
-                  <a href="mailto:contact@rrsteam.ro" className="text-lg" data-testid="contact-email">
-                    contact@rrsteam.ro
+                  <a href="mailto:adamcristian606@gmail.com" className="text-lg" data-testid="contact-email">
+                    adamcristian606@gmail.com
                   </a>
                 </div>
               </li>
