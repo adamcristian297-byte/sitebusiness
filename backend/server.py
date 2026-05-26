@@ -21,9 +21,12 @@ from pydantic import BaseModel, Field, EmailStr
 
 
 # ----- Config -----
-mongo_url = os.environ["MONGO_URL"].strip()
+mongo_url = os.environ["MONGO_URL"].strip().strip('"').strip("'")
+db_name = os.environ["DB_NAME"].strip().strip('"').strip("'")
+if not mongo_url.startswith("mongodb"):
+    raise ValueError(f"MONGO_URL must start with mongodb:// or mongodb+srv://, got: {mongo_url[:20]}...")
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ["DB_NAME"].strip()]
+db = client[db_name]
 
 JWT_SECRET = os.environ["JWT_SECRET"].strip()
 JWT_ALGORITHM = "HS256"
