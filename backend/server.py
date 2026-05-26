@@ -25,7 +25,13 @@ mongo_url = os.environ["MONGO_URL"].strip().strip('"').strip("'")
 db_name = os.environ["DB_NAME"].strip().strip('"').strip("'")
 if not mongo_url.startswith("mongodb"):
     raise ValueError(f"MONGO_URL must start with mongodb:// or mongodb+srv://, got: {mongo_url[:20]}...")
-client = AsyncIOMotorClient(mongo_url)
+import certifi
+client = AsyncIOMotorClient(
+    mongo_url,
+    tls=True,
+    tlsCAFile=certifi.where(),
+    serverSelectionTimeoutMS=30000,
+)
 db = client[db_name]
 
 JWT_SECRET = os.environ["JWT_SECRET"].strip()
