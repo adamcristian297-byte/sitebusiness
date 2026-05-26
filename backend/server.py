@@ -21,11 +21,19 @@ from pydantic import BaseModel, Field, EmailStr
 
 
 # ----- Config -----
+import ssl as _ssl
+import certifi as _certifi
+
 mongo_url = os.environ["MONGO_URL"].strip().strip('"').strip("'")
 db_name = os.environ["DB_NAME"].strip().strip('"').strip("'")
 if not mongo_url.startswith("mongodb"):
     raise ValueError(f"MONGO_URL must start with mongodb:// or mongodb+srv://, got: {mongo_url[:20]}...")
-client = AsyncIOMotorClient(mongo_url)
+
+_ssl_ctx = _ssl.SSLContext(_ssl.PROTOCOL_TLS_CLIENT)
+_ssl_ctx.minimum_version = _ssl.TLSVersion.TLSv1_2
+_ssl_ctx.load_verify_locations(_certifi.where())
+
+client = AsyncIOMotorClient(mongo_url, tls=True, tlsContext=_ssl_ctx)
 db = client[db_name]
 
 JWT_SECRET = os.environ["JWT_SECRET"].strip()
@@ -428,36 +436,40 @@ app.add_middleware(
 # ----- Startup -----
 @app.on_event("startup")
 async def startup_event():
-    # indexes
     try:
-        await db.users.create_index("email", unique=True)
-        await db.gallery.create_index("created_at")
-        await db.reviews.create_index("created_at")
-        await db.messages.create_index("created_at")
+        # indexes
+        try:
+            await db.users.create_index("email", unique=True)
+            await db.gallery.create_index("created_at")
+            await db.reviews.create_index("created_at")
+            await db.messages.create_index("created_at")
+        except Exception as e:
+            logger.warning(f"Index creation issue: {e}")
+
+        # seed admin
+        existing = await db.users.find_one({"email": ADMIN_EMAIL.lower()})
+        if not existing:
+            await db.users.insert_one({
+                "id": str(uuid.uuid4()),
+                "email": ADMIN_EMAIL.lower(),
+                "password_hash": hash_password(ADMIN_PASSWORD),
+                "name": "Ionut Encea",
+                "role": "admin",
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            })
+            logger.info(f"Admin seeded: {ADMIN_EMAIL}")
+        elif not verify_password(ADMIN_PASSWORD, existing.get("password_hash", "")):
+            await db.users.update_one(
+                {"email": ADMIN_EMAIL.lower()},
+                {"$set": {"password_hash": hash_password(ADMIN_PASSWORD)}},
+            )
+            logger.info("Admin password updated to match .env")
+
+        # storage
+        init_storage()
+        logger.info("Startup complete")
     except Exception as e:
-        logger.warning(f"Index creation issue: {e}")
-
-    # seed admin
-    existing = await db.users.find_one({"email": ADMIN_EMAIL.lower()})
-    if not existing:
-        await db.users.insert_one({
-            "id": str(uuid.uuid4()),
-            "email": ADMIN_EMAIL.lower(),
-            "password_hash": hash_password(ADMIN_PASSWORD),
-            "name": "Ionut Encea",
-            "role": "admin",
-            "created_at": datetime.now(timezone.utc).isoformat(),
-        })
-        logger.info(f"Admin seeded: {ADMIN_EMAIL}")
-    elif not verify_password(ADMIN_PASSWORD, existing.get("password_hash", "")):
-        await db.users.update_one(
-            {"email": ADMIN_EMAIL.lower()},
-            {"$set": {"password_hash": hash_password(ADMIN_PASSWORD)}},
-        )
-        logger.info("Admin password updated to match .env")
-
-    # storage
-    init_storage()
+        logger.error(f"Startup error (server will still run): {e}")
 
 
 @app.on_event("shutdown")
