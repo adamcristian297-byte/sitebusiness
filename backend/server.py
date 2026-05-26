@@ -21,14 +21,14 @@ from pydantic import BaseModel, Field, EmailStr
 
 
 # ----- Config -----
-mongo_url = os.environ["MONGO_URL"]
+mongo_url = os.environ["MONGO_URL"].strip()
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ["DB_NAME"]]
+db = client[os.environ["DB_NAME"].strip()]
 
-JWT_SECRET = os.environ["JWT_SECRET"]
+JWT_SECRET = os.environ["JWT_SECRET"].strip()
 JWT_ALGORITHM = "HS256"
-ADMIN_EMAIL = os.environ["ADMIN_EMAIL"]
-ADMIN_PASSWORD = os.environ["ADMIN_PASSWORD"]
+ADMIN_EMAIL = os.environ["ADMIN_EMAIL"].strip()
+ADMIN_PASSWORD = os.environ["ADMIN_PASSWORD"].strip()
 APP_NAME = os.environ.get("APP_NAME", "rrsteam")
 EMERGENT_KEY = os.environ.get("EMERGENT_LLM_KEY")
 STORAGE_URL = "https://integrations.emergentagent.com/objstore/api/v1/storage"
