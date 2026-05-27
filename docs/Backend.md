@@ -1,56 +1,29 @@
-# Backend
+# Backend (Deprecated)
 
-Single monolithic `server.py` (~470 lines) handling all server logic.
+The Python FastAPI backend has been **removed** in favor of Supabase.
 
-## Tech Stack
-- **Framework:** FastAPI
-- **Database:** MongoDB via Motor (async driver)
-- **Auth:** JWT with httpOnly cookies (12h access + 7d refresh), bcrypt
-- **Storage:** Emergent Object Storage for gallery images
-- **Server:** Uvicorn
+## What Was Replaced
 
-## Key Architecture Points
-
-- All models, routes, auth middleware, storage logic, and admin seeding live in one file
-- `APIRouter` with prefix `/api` included into the FastAPI app
-- On startup: seeds admin user from `ADMIN_EMAIL`/`ADMIN_PASSWORD` env vars
-- Gallery images stored via Emergent Object Storage (requires `EMERGENT_LLM_KEY`)
-- JWT tokens set as httpOnly cookies
-
-## Module-Level Globals
-
-| Variable | Purpose |
+| Old (MongoDB/FastAPI) | New (Supabase) |
 |---|---|
-| `ROOT_DIR` | Parent directory of `server.py` |
-| `mongo_url` | From `MONGO_URL` env var |
-| `client` | `AsyncIOMotorClient` instance |
-| `db` | Database handle |
-| `JWT_SECRET` | From env |
-| `app` | The FastAPI application |
-| `api_router` | Router with prefix `/api` |
-| `_storage_key` | Cached external storage key (lazy-init) |
+| `backend/server.py` | Supabase JS client in `frontend/src/lib/api.js` |
+| MongoDB Atlas | Supabase PostgreSQL |
+| Motor async driver | `@supabase/supabase-js` |
+| JWT + bcrypt auth | Supabase Auth |
+| Emergent Object Storage | Supabase Storage |
+| Railway/Vercel backend hosting | No backend needed |
 
-## SSL/TLS Fix
+## Files Removed
+- `backend/` — entire directory
+- `Procfile` — Railway config
+- `railway.json` — Railway config
 
-The MongoDB connection uses an explicit SSLContext with certifi CA bundle to work around OpenSSL issues on cloud platforms (Render, Railway):
+## Current Architecture
+The frontend talks directly to Supabase via the JS client. No server to host.
 
-```python
-import ssl as _ssl
-import certifi as _certifi
-
-_ssl_ctx = _ssl.SSLContext(_ssl.PROTOCOL_TLS_CLIENT)
-_ssl_ctx.minimum_version = _ssl.TLSVersion.TLSv1_2
-_ssl_ctx.load_verify_locations(_certifi.where())
-
-client = AsyncIOMotorClient(mongo_url, tls=True, tlsContext=_ssl_ctx)
-```
-
-## Resilient Startup
-
-The startup event is wrapped in try/except so the server starts even if MongoDB is temporarily unreachable. Routes will error individually but the container stays alive.
+See [[Supabase Setup]] for configuration details.
 
 ## Related
-- [[API Routes]]
-- [[Database]]
-- [[Authentication]]
+- [[Supabase Setup]]
+- [[Deployment]]
 - [[Environment Variables]]

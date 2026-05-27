@@ -1,37 +1,42 @@
 # Authentication
 
-## JWT Cookie Auth
+## Supabase Auth
 
-- **Access token:** 12h expiry, httpOnly cookie
-- **Refresh token:** 7d expiry, httpOnly cookie
-- **Algorithm:** HS256
-- **Password hashing:** bcrypt
+Uses Supabase's built-in email/password authentication. No custom JWT or bcrypt.
 
 ## Flow
 
-1. User submits credentials to `POST /api/auth/login`
-2. Server validates with bcrypt, returns JWT tokens as httpOnly cookies
-3. All subsequent requests include cookies automatically (`withCredentials: true`)
-4. Admin routes check JWT via dependency injection
-5. `POST /api/auth/refresh` extends the session
-6. `POST /api/auth/logout` clears cookies
+1. User submits credentials to `/admin/login`
+2. Frontend calls `supabase.auth.signInWithPassword({ email, password })`
+3. Supabase returns a session with user info
+4. `AuthContext` listens to `onAuthStateChange` and updates state
+5. `ProtectedRoute` checks if user is authenticated before rendering admin pages
+6. Logout calls `supabase.auth.signOut()`
 
-## Protected Routes
+## Implementation
 
-All `/api/admin/*` routes require a valid JWT. The auth middleware:
-1. Reads `access_token` from cookies
-2. Decodes with `JWT_SECRET`
-3. Injects user into request state
+### AuthContext (`context/AuthContext.jsx`)
+- `user` — Supabase user object or `false` (unauthenticated) or `null` (checking)
+- `checked` — whether initial session check is complete
+- `login(email, password)` — calls Supabase Auth
+- `logout()` — signs out
+- `refresh()` — re-checks session
 
-## Frontend Auth Context
+### ProtectedRoute (`components/admin/ProtectedRoute.jsx`)
+- Shows loading spinner while `checked` is false
+- Redirects to `/admin/login` if `user` is falsy
+- Renders children if authenticated
 
-`context/AuthContext.jsx` manages:
-- Current user state
-- Login/logout functions
-- Token refresh
-- Protected route component (`ProtectedRoute`)
+## Admin User Setup
+Created manually in Supabase dashboard:
+1. Go to **Authentication** > **Users**
+2. Click **Add user** > **Create new user**
+3. Enter email and password
+4. Use these credentials to log in at `/admin/login`
+
+## RLS (Row Level Security)
+Admin operations require an authenticated Supabase session. RLS policies check `auth.role() = 'authenticated'` for full CRUD access.
 
 ## Related
-- [[API Routes]]
-- [[Environment Variables]]
+- [[Supabase Setup]]
 - [[Admin Panel]]

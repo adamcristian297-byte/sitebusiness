@@ -4,20 +4,20 @@ Romanian concrete business website for **RRS Team IMP** (owner: Ionut Encea).
 
 ## Architecture
 
-- [[Backend]] - FastAPI + MongoDB
 - [[Frontend]] - React 19 + Tailwind + shadcn/ui
-- [[Deployment]] - Vercel (frontend) + Railway (backend)
+- [[Supabase Setup]] - Database + Auth + Storage
+- [[Deployment]] - Vercel (frontend) + Supabase (everything else)
 - [[Environment Variables]] - All required env vars
-- [[API Routes]] - Backend endpoints
+- [[API Routes]] - Supabase database operations
 - [[Frontend Routes]] - Client-side routing
 - [[Design System]] - Colors, typography, layout
-- [[Database]] - MongoDB collections & schema
-- [[Authentication]] - JWT cookie auth
-- [[Gallery System]] - Image upload & storage
+- [[Database]] - PostgreSQL tables & schema
+- [[Authentication]] - Supabase Auth
+- [[Gallery System]] - Image upload via Supabase Storage
 - [[Admin Panel]] - Admin dashboard pages
-- [[Deployment History]] - What was tried, what worked
 - [[Known Issues]] - Current bugs and workarounds
 - [[Backlog]] - Planned features
+- [[Backend]] - Deprecated (removed in favor of Supabase)
 
 ## Quick Start
 
@@ -25,33 +25,27 @@ Romanian concrete business website for **RRS Team IMP** (owner: Ionut Encea).
 # Frontend
 cd frontend && yarn install && yarn start
 
-# Backend
-cd backend && pip install -r requirements.txt && uvicorn server:app --reload
-
-# Tests
-cd backend && pytest
+# Set env vars in frontend/.env:
+# REACT_APP_SUPABASE_URL=https://your-project.supabase.co
+# REACT_APP_SUPABASE_ANON_KEY=your-anon-key
 ```
+
+No backend server needed.
 
 ## Repository Structure
 
 ```
-backend/
-  server.py              # All routes, auth, storage, admin seeding
-  requirements.txt       # Python dependencies
-  runtime.txt            # Python version pin for Render/Railway
-  .env                   # Local env vars (gitignored)
-
 frontend/
   craco.config.js        # CRA config with @ path alias
   tailwind.config.js     # shadcn theme tokens
   components.json        # shadcn component config
   .npmrc                 # legacy-peer-deps=true
-  .env                   # Local frontend env (gitignored)
   src/
     App.js               # Router
     index.css            # Tailwind + Google Fonts
     context/AuthContext.jsx
-    lib/api.js           # Axios instance
+    lib/supabase.js      # Supabase client
+    lib/api.js           # Supabase database/storage operations
     lib/utils.js         # cn() helper
     components/
       site/              # Public sections
@@ -62,9 +56,11 @@ frontend/
       LoginPage.jsx
       admin/
 
+supabase/
+  migrations/
+    001_initial_schema.sql  # Database schema + RLS policies
+
 docs/                    # This documentation (Obsidian vault)
 vercel.json              # Vercel deployment config
-railway.json             # Railway deployment config
-Procfile                 # Railway start command
 package.json             # Root (prevents Vercel auto-detection)
 ```

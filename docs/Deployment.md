@@ -5,81 +5,56 @@
 | Layer | Platform | URL |
 |---|---|---|
 | Frontend | Vercel | `sitebusiness.vercel.app` |
-| Backend | Railway | `web-production-1cc0.up.railway.app` |
-| Database | MongoDB Atlas | Cloud cluster |
+| Database | Supabase | `PROJECT_ID.supabase.co` |
+| Auth | Supabase | Built-in |
+| Storage | Supabase | `gallery` bucket |
+
+**No backend server needed.** Frontend talks directly to Supabase via JS client.
 
 ## Vercel (Frontend)
 
 ### Config: `vercel.json`
-
 ```json
 {
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/build",
   "rewrites": [
-    { "source": "/((?!api/|static/|favicon.ico|manifest.json|robots.txt|logo).*)", "destination": "/index.html" }
+    { "source": "/((?!static/|favicon.ico|manifest.json|robots.txt|logo).*)", "destination": "/index.html" }
   ]
 }
 ```
 
-### Key Points
-- Uses `buildCommand`/`outputDirectory` format (not `builds` array)
-- SPA rewrites exclude `/api/` and static assets
-- Root `package.json` (`{"private": true}`) prevents Vercel from auto-detecting `backend/` as a Python service
-- `.vercelignore` excludes: `node_modules`, `.git`, `.openclaude`, `.emergent`, `memory`, `test_reports`, `tests`, `*.md`
-
 ### Environment Variables (Vercel Dashboard)
-- `REACT_APP_BACKEND_URL` = Railway backend URL (e.g., `https://web-production-1cc0.up.railway.app`)
-
-## Railway (Backend)
-
-### Config: `railway.json`
-
-```json
-{
-  "$schema": "https://railway.app/railway.schema.json",
-  "build": {
-    "builder": "NIXPACKS",
-    "buildCommand": "pip install -r requirements.txt"
-  },
-  "deploy": {
-    "startCommand": "uvicorn server:app --host 0.0.0.0 --port $PORT",
-    "healthcheckPath": "/api/",
-    "restartPolicyType": "ON_FAILURE"
-  }
-}
-```
+- `REACT_APP_SUPABASE_URL` — e.g., `https://xxxx.supabase.co`
+- `REACT_APP_SUPABASE_ANON_KEY` — the anon/public key from Supabase
 
 ### Key Points
-- Root directory must be set to `backend` in Railway dashboard
-- Uses Python 3.11 (Nixpacks auto-detects from `runtime.txt`)
-- `Procfile` also present as fallback
+- Uses `buildCommand`/`outputDirectory` format
+- SPA rewrites exclude static assets
+- Root `package.json` (`{"private": true}`) prevents Vercel from auto-detecting subdirectories
+- `.vercelignore` excludes dev artifacts
 
-### Environment Variables (Railway Dashboard)
-See [[Environment Variables]]
+## Supabase (Database + Auth + Storage)
 
-## MongoDB Atlas
+### Setup Steps
+1. Create project at [supabase.com](https://supabase.com)
+2. Run SQL migration in SQL Editor
+3. Create `gallery` storage bucket (public)
+4. Create admin user in Authentication > Users
+5. Copy Project URL and anon key
 
-- Free M0 cluster
-- User: `adamcristian297_db_user`
-- Network: `0.0.0.0/0` (allow all IPs)
-- Connection string uses `mongodb+srv://` protocol
+See [[Supabase Setup]] for full details.
 
 ## Deployment History
 
 ### What Was Tried
 
-1. **Vercel full-stack** (experimentalServices format) - Failed: Vercel auto-detects `backend/` as Python service, requires framework config
-2. **Vercel full-stack** (builds/routes with api/index.py) - Failed: Same auto-detection issue
-3. **Vercel frontend + Render backend** - Failed: Render has broken OpenSSL with MongoDB Atlas TLS (SSL handshake error)
-4. **Vercel frontend + Railway backend** - Working with explicit SSLContext + certifi fix
-
-### Key Lessons
-- Vercel auto-detects framework services by scanning for `requirements.txt`, `package.json`, etc.
-- Root `package.json` prevents Vercel from treating subdirectories as separate services
-- Render's Python 3.12 build has broken OpenSSL for MongoDB Atlas TLS
-- Railway uses Python 3.11 which works, but still needs explicit SSLContext for Atlas
+1. **Vercel full-stack** — Failed: auto-detects Python services
+2. **Vercel frontend + Render backend** — Failed: Render has broken SSL with MongoDB Atlas
+3. **Vercel frontend + Railway backend** — Worked but complex
+4. **Vercel frontend + Supabase** — Current: simplest, no backend needed
 
 ## Related
+- [[Supabase Setup]]
 - [[Environment Variables]]
 - [[Known Issues]]

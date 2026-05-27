@@ -2,30 +2,28 @@
 
 ## Active
 
-### MongoDB Atlas SSL on Cloud Platforms
-- **Status:** Workaround in place
-- **Issue:** MongoDB Atlas TLS handshakes fail with default OpenSSL on Render and Railway
-- **Fix:** Explicit `ssl.SSLContext` with `certifi` CA bundle + TLSv1.2 minimum
-- **Platforms affected:** Render (completely broken), Railway (works with fix)
+### Gallery Images Empty
+- **Status:** Waiting for user action
+- **Issue:** No images uploaded yet
+- **Action:** Upload via admin panel at `/admin/galerie`
 
-### Gallery Images Removed
-- **Status:** Intentional
-- **Issue:** Stock fallback photos removed from gallery
-- **Action:** User needs to upload real photos via admin panel
-
-### Contact Info Updated
-- **Status:** Done
-- **Changed:** Phone to `0770865497`, Email to `adamcristian606@gmail.com`
-- **Note:** SEO structured data in `index.html` still has old phone/email
+### SEO Structured Data
+- **Status:** Needs update
+- **Issue:** `index.html` still has old phone/email in structured data
+- **Action:** Update JSON-LD schema
 
 ## Resolved
 
+### MongoDB SSL on Cloud Platforms
+- **Was:** Persistent TLS handshake failures on Render and Railway
+- **Fix:** Migrated to Supabase — no self-hosted backend needed
+
 ### Vercel Blank Page
-- **Was:** Vercel serving "ClientFlow Pro" (wrong project)
+- **Was:** Vercel serving wrong project ("ClientFlow Pro")
 - **Fix:** Root `package.json` prevents multi-service auto-detection
 
 ### Vercel JS Returning HTML
-- **Was:** SPA fallback catching `/static/js/` requests
+- **Was:** SPA fallback catching JS bundle requests
 - **Fix:** Rewrites exclude `/static/` and other asset paths
 
 ### Peer Dependency Conflict
@@ -34,7 +32,11 @@
 
 ### Render Python 3.14
 - **Was:** Render ignoring `runtime.txt`, using Python 3.14
-- **Fix:** Switched to Railway (uses Python 3.11 from Nixpacks)
+- **Fix:** Migrated to Supabase (no Python needed)
+
+### Railway SSL
+- **Was:** Same SSL issue as Render with MongoDB Atlas
+- **Fix:** Migrated to Supabase
 
 ## Related
 - [[Deployment]]

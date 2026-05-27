@@ -11,7 +11,7 @@ React 19 SPA with Tailwind CSS and shadcn/ui components.
 - **Package Manager:** Yarn 1.22
 - **Toasts:** Sonner
 - **Icons:** lucide-react (stroke-width 1.5)
-- **HTTP:** Axios (with `withCredentials: true`)
+- **Database/Storage/Auth:** Supabase JS client (`@supabase/supabase-js`)
 
 ## Path Alias
 
@@ -23,21 +23,25 @@ React 19 SPA with Tailwind CSS and shadcn/ui components.
 |---|---|
 | `App.js` | Router: `/`, `/admin/login`, `/admin/*` |
 | `index.css` | Tailwind directives, Google Fonts |
-| `context/AuthContext.jsx` | Auth state management |
-| `lib/api.js` | Axios instance with `REACT_APP_BACKEND_URL` |
+| `context/AuthContext.jsx` | Supabase Auth state management |
+| `lib/supabase.js` | Supabase client initialization |
+| `lib/api.js` | Supabase database + storage operations |
 | `lib/utils.js` | `cn()` helper for classnames |
+
+## Supabase Client
+
+```javascript
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL,
+  process.env.REACT_APP_SUPABASE_ANON_KEY
+);
+```
 
 ## API Communication
 
-The Axios instance in `lib/api.js` uses `REACT_APP_BACKEND_URL` env var. If empty, it uses relative URLs (same-origin `/api/*`).
-
-```javascript
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
-const api = axios.create({
-  baseURL: `${BACKEND_URL}/api`,
-  withCredentials: true,
-});
-```
+All database operations go through `lib/api.js` which uses the Supabase client directly. No HTTP requests to a backend server.
 
 ## Peer Dependency Fix
 
@@ -57,3 +61,4 @@ craco build  # Uses CRACO for path aliases and Tailwind config
 - [[Frontend Routes]]
 - [[Design System]]
 - [[Deployment]]
+- [[Supabase Setup]]

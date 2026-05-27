@@ -1,49 +1,47 @@
 # API Routes
 
-All routes prefixed with `/api`.
+All operations go through the Supabase JS client. No REST API server.
 
-## Public
+## Public Operations
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/api/` | Health check |
-| `GET` | `/api/gallery` | List published gallery images |
-| `GET` | `/api/gallery/image/{image_id}` | Single image |
-| `GET` | `/api/reviews` | List approved reviews |
-| `POST` | `/api/contact` | Submit contact message |
+### Gallery
+- `fetchGallery()` — SELECT from `gallery` where `is_deleted = false`, ordered by `created_at` DESC
 
-## Auth
+### Reviews
+- `fetchReviews()` — SELECT from `reviews` where `approved = true`, ordered by `created_at` DESC
+- `submitReview(form)` — INSERT into `reviews` with `approved = false`
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/api/auth/login` | Returns httpOnly JWT cookies |
-| `POST` | `/api/auth/logout` | Clears cookies |
-| `GET` | `/api/auth/me` | Current user |
-| `POST` | `/api/auth/refresh` | Refresh access token |
+### Contact
+- `submitMessage(form)` — INSERT into `messages`
 
-## Admin (requires auth)
+## Admin Operations (requires Supabase Auth session)
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/api/admin/gallery` | Upload image |
-| `GET` | `/api/admin/gallery` | List all images (including unpublished) |
-| `DELETE` | `/api/admin/gallery/{image_id}` | Delete image |
-| `GET` | `/api/admin/reviews` | List all reviews |
-| `POST` | `/api/admin/reviews` | Create review |
-| `PATCH` | `/api/admin/reviews/{review_id}` | Update review |
-| `DELETE` | `/api/admin/reviews/{review_id}` | Delete review |
-| `GET` | `/api/admin/messages` | List messages |
-| `PATCH` | `/api/admin/messages/{message_id}` | Update message status |
-| `DELETE` | `/api/admin/messages/{message_id}` | Delete message |
-| `GET` | `/api/admin/stats` | Dashboard stats |
+### Gallery
+- `fetchGalleryAdmin()` — SELECT from `gallery` where `is_deleted = false`
+- `uploadGalleryImage(file, title)` — Upload to Supabase Storage + INSERT into `gallery`
+- `deleteGalleryImage(id)` — UPDATE `gallery` set `is_deleted = true`
 
-## Auth Details
+### Reviews
+- `fetchReviewsAdmin()` — SELECT from `reviews` (all, including unapproved)
+- `createReviewAdmin(form)` — INSERT into `reviews`
+- `updateReviewAdmin(id, updates)` — UPDATE `reviews` with partial fields
+- `deleteReviewAdmin(id)` — DELETE from `reviews`
 
-- JWT tokens set as httpOnly cookies
-- `access_token`: 12h expiry
-- `refresh_token`: 7d expiry
-- `withCredentials: true` on all Axios requests
+### Messages
+- `fetchMessages()` — SELECT from `messages` (all)
+- `markMessageRead(id)` — UPDATE `messages` set `read = true`
+- `deleteMessage(id)` — DELETE from `messages`
+
+### Stats
+- `fetchStats()` — COUNT queries across all tables (gallery, reviews, messages)
+
+## Storage
+- `galleryImageUrl(storagePath)` — Gets public URL from Supabase Storage bucket `gallery`
+
+## Implementation
+All operations are in `frontend/src/lib/api.js`.
 
 ## Related
-- [[Backend]]
-- [[Authentication]]
+- [[Supabase Setup]]
+- [[Database]]
+- [[Gallery System]]

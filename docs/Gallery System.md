@@ -2,41 +2,37 @@
 
 ## Architecture
 
-Gallery images are stored in **Emergent Object Storage** (S3-like external service), not on the local filesystem.
+Gallery images are stored in **Supabase Storage** (bucket: `gallery`), not on a custom server.
 
 ## Storage Flow
 
-### Upload (`POST /api/admin/gallery`)
-1. Read file into memory (`await file.read()`)
-2. Enforce 10 MB limit
-3. Generate UUID path: `gallery/{uuid}.{ext}`
-4. Upload via `put_object()` to Emergent storage
-5. Save metadata to MongoDB `gallery` collection
+### Upload (Admin)
+1. Admin selects file in `/admin/galerie`
+2. `uploadGalleryImage(file, title)` in `api.js`:
+   - Generates UUID-based path: `gallery/{uuid}.{ext}`
+   - Uploads to Supabase Storage: `supabase.storage.from('gallery').upload(path, file)`
+   - Inserts metadata into `gallery` table
+3. Image appears in admin and public gallery
 
-### Retrieval (`GET /api/gallery/image/{image_id}`)
-1. Look up image record in MongoDB
-2. Fetch bytes from Emergent storage via `get_object()`
-3. Return as response with correct content type
+### Display (Public)
+1. `fetchGallery()` queries `gallery` table (where `is_deleted = false`)
+2. `galleryImageUrl(storagePath)` gets public URL from Supabase Storage
+3. URL format: `https://PROJECT_ID.supabase.co/storage/v1/object/public/gallery/{path}`
 
-### Delete (`DELETE /api/admin/gallery/{image_id}`)
-1. Remove from MongoDB
-2. (Storage cleanup not implemented)
+### Delete (Admin)
+1. Soft-delete: updates `is_deleted = true` in database
+2. Image no longer appears in queries
+3. (Storage file not explicitly deleted — can be cleaned up later)
 
-## External Storage API
+## Supabase Storage
+- **Bucket:** `gallery`
+- **Public:** yes (anyone can read, no auth needed for viewing)
+- **Upload:** requires authenticated session (RLS policy)
 
-- **Init:** `POST https://integrations.emergentagent.com/objstore/api/v1/storage/init`
-- **Upload:** `PUT` with storage key
-- **Download:** `GET` with storage key
-- **Key:** Cached in `_storage_key` global, initialized lazily
-
-## Frontend Display
-
-- Public gallery fetches from `GET /api/gallery`
-- Admin gallery fetches from `GET /api/admin/gallery` (includes unpublished)
-- Images displayed with `galleryImageUrl(id)` helper
-- Fallback: empty array (stock photos removed)
+## File Size Limit
+No explicit limit in the frontend code. Supabase free tier allows up to 50MB per file.
 
 ## Related
-- [[Backend]]
+- [[Supabase Setup]]
 - [[API Routes]]
 - [[Admin Panel]]
